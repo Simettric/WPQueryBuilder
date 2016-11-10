@@ -21,6 +21,9 @@ class Builder
     private $offset=0;
     private $posts_per_page;
 
+    private $order_by;
+    private $order_direction="DESC";
+
     /**
      * @var array
      */
@@ -53,6 +56,33 @@ class Builder
     public function setOffset($offset)
     {
         $this->offset = $offset;
+    }
+
+
+    /**
+     * @param string $direction
+     * @return $this
+     */
+    public function setOrderDirection($direction="DESC")
+    {
+        $this->order_direction = $direction;
+
+        return $this;
+    }
+
+
+    /**
+     * @param $order_by
+     * @return $this
+     */
+    public function addOrderBy($order_by)
+    {
+        if(false===strpos($this->order_by, $order_by))
+        {
+            $this->order_by = trim($this->order_by . " " . $order_by);
+        }
+
+        return $this;
     }
 
     /**
@@ -201,6 +231,8 @@ class Builder
         }
 
         $this->hydrateLimitsParameters();
+
+        $this->hydrateOrderParameters();
     }
 
 
@@ -258,6 +290,21 @@ class Builder
         {
             $this->parameters["posts_per_page"] = $this->posts_per_page;
             $this->parameters["offset"]         = (int) $this->offset;
+        }
+
+    }
+
+
+    /**
+     * @return void
+     */
+    private function hydrateOrderParameters()
+    {
+
+        if($this->order_by)
+        {
+            $this->parameters["order_by"] = $this->order_by;
+            $this->parameters["order"]    = $this->order_direction?:"DESC";
         }
 
     }

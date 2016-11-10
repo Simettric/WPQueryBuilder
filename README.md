@@ -62,7 +62,27 @@ Retrieve all CUSTOM POST TYPE and PAGES
                                ->addPostType(Builder::POST_TYPE_PAGE)
                                ->getWPQuery();
                                
-                               
+      
+### ORDERBY
+
+Order contents by title descending
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->addOrderBy("title")->getWPQuery();
+            
+           
+Order contents by title with date fallback, ascending
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->addOrderBy("title")
+                                ->addOrderBy("date")
+                                ->setOrderDirection("ASC")
+                                ->getWPQuery();
+                                
+            
+            
 ### LIMITS AND OFFSETS
 
 Retrieve only 10 contents

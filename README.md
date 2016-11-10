@@ -22,7 +22,7 @@ Retrieve any post type where post meta price is equal or greater than 10 OR size
                
            $builder = new Builder();
            $wp_query = $builder->createMainMetaQuery("AND")
-                                ->addMetaQuery(MetaQuery::create('price', 10, '>=', 'INT'))
+                                ->addMetaQuery(MetaQuery::create('price', 10, '>=', 'NUMERIC'))
                                 ->addMetaQuery(MetaQuery::create('size', 'XL'))
                                 ->getWPQuery();  
                                 
@@ -31,7 +31,7 @@ Retrieve any post type where post meta price is equal or greater than 10 OR size
                                 
            $builder = new Builder();
            $builder->createMainMetaQuery("AND")
-                   ->addMetaQuery(MetaQuery::create('price', 10, '>=', 'INT'));
+                   ->addMetaQuery(MetaQuery::create('price', 10, '>=', 'NUMERIC'));
                         
            $condition = new MetaQueryCollection('OR');
            $condition->add(MetaQuery::create('color', 'blue'))

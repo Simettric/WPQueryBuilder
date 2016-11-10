@@ -61,7 +61,8 @@ class Builder
 
 
     /**
-     * @param $type string|array
+     * @param $type
+     * @return $this
      */
     public function addPostType($type)
     {
@@ -81,19 +82,25 @@ class Builder
 
             $this->post_types[$type] = $type;
         }
+
+        return $this;
     }
 
     /**
-     * @param $type string
+     * @param $type
+     * @return $this
      */
     public function removePostType($type)
     {
         if(isset($this->post_types[$type]))
             unset($this->post_types[$type]);
+
+        return $this;
     }
 
     /**
      * @param MetaQueryCollection $collection
+     * @return $this
      */
     public function addMetaQueryCollection(MetaQueryCollection $collection)
     {
@@ -101,10 +108,14 @@ class Builder
             $this->createMainMetaQuery();
 
         $this->mainMetaQueryCollection->addCollection($collection);
+
+        return $this;
     }
+
 
     /**
      * @param MetaQuery $metaQuery
+     * @return $this
      */
     public function addMetaQuery(MetaQuery $metaQuery)
     {
@@ -112,6 +123,8 @@ class Builder
             $this->createMainMetaQuery();
 
         $this->mainMetaQueryCollection->add($metaQuery);
+
+        return $this;
     }
 
 

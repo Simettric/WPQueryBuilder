@@ -30,12 +30,16 @@ class MetaQueryCollection implements \Iterator
         return $this->where_type_relation;
     }
 
+
     /**
      * @param MetaQuery $query
+     * @return $this
      */
     public function add(MetaQuery $query)
     {
         $this->meta_queries[] = $query;
+
+        return $this;
     }
 
     /**

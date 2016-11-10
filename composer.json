@@ -1,0 +1,25 @@
+
+{
+  "name": "simettric/wp-query-builder",
+  "description": "A query builder for WordPress WP_Query, inspired by Doctrine Query Builder",
+  "version": "1.0.0",
+  "keywords": ["wordpress"],
+  "homepage": "http://simettric.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Asier Marqués",
+      "email": "asier@simettric.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.5.9"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
+  "autoload": {
+    "psr-4": { "Simettric\\WPQueryBuilder\\": "src/", "Simettric\\WPQueryBuilder\\Test\\": "tests/" }
+  },
+  "minimum-stability": "dev"
+}

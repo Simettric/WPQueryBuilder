@@ -27,7 +27,7 @@ class MetaQuery
      * @param string $type ('NUMERIC', 'BINARY', 'CHAR', 'DATE', 'DATETIME', 'DECIMAL', 'SIGNED', 'TIME', 'UNSIGNED', You can also specify precision and scale for the 'DECIMAL' and 'NUMERIC' types (for example, 'DECIMAL(10,5)' or 'NUMERIC(10)' are valid)
      * @return MetaQuery
      */
-    static function create($key, $value, $compare="=", $type="CHAR")
+    public static function create($key, $value, $compare="=", $type="CHAR")
     {
         $instance = new MetaQuery();
         $instance->key     = $key;

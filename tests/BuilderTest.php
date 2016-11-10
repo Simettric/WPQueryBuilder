@@ -14,7 +14,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 {
 
 
-    function testMetaParameters()
+    public function testMetaParameters()
     {
         $builder = new Builder();
         $builder->createMainMetaQuery();

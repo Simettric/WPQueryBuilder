@@ -1,13 +1,14 @@
 <?php
-
-namespace Simettric\WPQueryBuilder;
-use Simettric\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
-
 /**
  * Created by Asier Marqués <asiermarques@gmail.com>
  * Date: 9/11/16
  * Time: 22:36
  */
+
+namespace Simettric\WPQueryBuilder;
+use Simettric\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
+
+
 class Builder
 {
     /**
@@ -26,7 +27,7 @@ class Builder
      * @param MetaQueryCollection|null $collection
      * @throws MainMetaQueryAlreadyCreatedException
      */
-    function createMainMetaQuery($where_type="AND", MetaQueryCollection $collection=null)
+    public function createMainMetaQuery($where_type="AND", MetaQueryCollection $collection=null)
     {
         if($this->mainMetaQueryCollection)
             throw new MainMetaQueryAlreadyCreatedException();
@@ -41,7 +42,7 @@ class Builder
     /**
      * @param MetaQueryCollection $collection
      */
-    function addMetaQueryCollection(MetaQueryCollection $collection)
+    public function addMetaQueryCollection(MetaQueryCollection $collection)
     {
         if(!$this->mainMetaQueryCollection)
             $this->createMainMetaQuery();
@@ -52,7 +53,7 @@ class Builder
     /**
      * @param MetaQuery $metaQuery
      */
-    function addMetaQuery(MetaQuery $metaQuery)
+    public function addMetaQuery(MetaQuery $metaQuery)
     {
         if(!$this->mainMetaQueryCollection)
             $this->createMainMetaQuery();
@@ -64,7 +65,7 @@ class Builder
     /**
      * @return array
      */
-    function getParameters()
+    public function getParameters()
     {
         $this->hydrateParametersArray();
 
@@ -74,7 +75,7 @@ class Builder
     /**
      * @return \WP_Query
      */
-    function getWPQuery()
+    public function getWPQuery()
     {
         return new \WP_Query($this->getParameters());
     }

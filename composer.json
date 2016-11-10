@@ -2,7 +2,6 @@
 {
   "name": "simettric/wp-query-builder",
   "description": "A query builder for WordPress WP_Query, inspired by Doctrine Query Builder",
-  "version": "1.0.0",
   "keywords": ["wordpress"],
   "homepage": "http://simettric.com",
   "license": "MIT",

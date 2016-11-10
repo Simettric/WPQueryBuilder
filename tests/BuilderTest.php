@@ -37,4 +37,38 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testPostTypeParameters()
+    {
+        $builder = new Builder();
+
+        $parameters = $builder->getParameters();
+
+        $this->assertArrayHasKey('post_type', $parameters);
+
+        $this->assertContains(Builder::POST_TYPE_ANY, $parameters["post_type"]);
+
+
+        $builder->addPostType(Builder::POST_TYPE_PAGE);
+        $builder->addPostType(Builder::POST_TYPE_POST);
+        $parameters = $builder->getParameters();
+
+        $this->assertCount(2, $parameters["post_type"]);
+
+        $builder->removePostType(Builder::POST_TYPE_PAGE);
+        $parameters = $builder->getParameters();
+
+        $this->assertCount(1, $parameters["post_type"]);
+
+        $this->assertContains(Builder::POST_TYPE_POST, $parameters["post_type"]);
+
+
+        $builder->setAnyPostType();
+
+        $parameters = $builder->getParameters();
+
+        $this->assertEquals(Builder::POST_TYPE_ANY, $parameters["post_type"]);
+
+
+    }
+
 }

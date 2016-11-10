@@ -11,15 +11,30 @@ use Simettric\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
 
 class Builder
 {
+    const POST_TYPE_POST       = 'post';
+    const POST_TYPE_PAGE       = 'page';
+    const POST_TYPE_REVISION   = 'revision';
+    const POST_TYPE_ATTACHMENT = 'attachment';
+    const POST_TYPE_MENU_ITEM  = 'nav_menu_item';
+    const POST_TYPE_ANY        = 'any';
+
     /**
      * @var array
      */
     private $parameters=array();
 
+    private $post_types=array();
+
     /**
      * @var MetaQueryCollection
      */
     private $mainMetaQueryCollection=null;
+
+
+    public function __construct()
+    {
+        $this->post_types = static::POST_TYPE_ANY;
+    }
 
 
     /**
@@ -37,6 +52,44 @@ class Builder
         if($collection)
             $this->mainMetaQueryCollection->addCollection($collection);
 
+    }
+
+    public function setAnyPostType()
+    {
+        $this->post_types = static::POST_TYPE_ANY;
+    }
+
+
+    /**
+     * @param $type string|array
+     */
+    public function addPostType($type)
+    {
+        if($this->post_types == static::POST_TYPE_ANY)
+        {
+            $this->post_types = array();
+        }
+
+        if(is_array($type))
+        {
+            foreach ($type as $value)
+            {
+                $this->post_types[$value] = $value;
+            }
+
+        }else{
+
+            $this->post_types[$type] = $type;
+        }
+    }
+
+    /**
+     * @param $type string
+     */
+    public function removePostType($type)
+    {
+        if(isset($this->post_types[$type]))
+            unset($this->post_types[$type]);
     }
 
     /**
@@ -86,7 +139,12 @@ class Builder
      */
     private function hydrateParametersArray()
     {
-        $this->parameters["meta_query"] = $this->hydrateMetaParametersArray($this->mainMetaQueryCollection);
+        $this->parameters["post_type"]  = $this->getPostTypeParametersArray();
+
+        if($this->mainMetaQueryCollection)
+        {
+            $this->parameters["meta_query"] = $this->getMetaParametersArray($this->mainMetaQueryCollection);
+        }
     }
 
 
@@ -95,7 +153,7 @@ class Builder
      * @param array $meta_array
      * @return array
      */
-    private function hydrateMetaParametersArray(MetaQueryCollection $collection, $meta_array=array())
+    private function getMetaParametersArray(MetaQueryCollection $collection, $meta_array=array())
     {
 
         $meta_array["relation"] = $collection->getRelationType();
@@ -112,11 +170,25 @@ class Builder
 
             }else if($meta instanceof MetaQueryCollection)
             {
-                $meta_array[] = $this->hydrateMetaParametersArray($meta);
+                $meta_array[] = $this->getMetaParametersArray($meta);
             }
         }
 
         return $meta_array;
+    }
+
+
+    /**
+     * @return array|string
+     */
+    private function getPostTypeParametersArray()
+    {
+        if(is_array($this->post_types))
+        {
+            return array_values($this->post_types);
+        }
+
+        return static::POST_TYPE_ANY;
     }
 
 }

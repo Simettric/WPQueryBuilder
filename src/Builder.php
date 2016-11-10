@@ -18,6 +18,9 @@ class Builder
     const POST_TYPE_MENU_ITEM  = 'nav_menu_item';
     const POST_TYPE_ANY        = 'any';
 
+    private $offset=0;
+    private $posts_per_page;
+
     /**
      * @var array
      */
@@ -34,6 +37,31 @@ class Builder
     public function __construct()
     {
         $this->post_types = static::POST_TYPE_ANY;
+    }
+
+    /**
+     * @param $limit
+     */
+    public function setLimit($limit)
+    {
+        $this->posts_per_page = $limit;
+    }
+
+    /**
+     * @param $offset
+     */
+    public function setOffset($offset)
+    {
+        $this->offset = $offset;
+    }
+
+    /**
+     * The query builder must to return all the content
+     */
+    public function withAnyLimit()
+    {
+        $this->posts_per_page = -1;
+        $this->offset = 0;
     }
 
 
@@ -54,6 +82,9 @@ class Builder
 
     }
 
+    /**
+     * the query builder must to return all the content types
+     */
     public function setAnyPostType()
     {
         $this->post_types = static::POST_TYPE_ANY;
@@ -148,6 +179,16 @@ class Builder
 
 
     /**
+     * @return array
+     */
+    public function getPosts()
+    {
+        $wp_query = $this->getWPQuery();
+        return $wp_query->get_posts();
+    }
+
+
+    /**
      * @return void
      */
     private function hydrateParametersArray()
@@ -158,6 +199,8 @@ class Builder
         {
             $this->parameters["meta_query"] = $this->getMetaParametersArray($this->mainMetaQueryCollection);
         }
+
+        $this->hydrateLimitsParameters();
     }
 
 
@@ -202,6 +245,21 @@ class Builder
         }
 
         return static::POST_TYPE_ANY;
+    }
+
+
+    /**
+     * @return void
+     */
+    private function hydrateLimitsParameters()
+    {
+
+        if($this->posts_per_page)
+        {
+            $this->parameters["posts_per_page"] = $this->posts_per_page;
+            $this->parameters["offset"]         = (int) $this->offset;
+        }
+
     }
 
 }

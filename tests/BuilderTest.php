@@ -71,4 +71,26 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testLimitsParameters()
+    {
+        $builder = new Builder();
+
+        $parameters = $builder->getParameters();
+
+        $this->assertArrayNotHasKey('posts_per_page', $parameters);
+
+        $builder->setLimit(10);
+
+        $parameters = $builder->getParameters();
+        $this->assertEquals(10, $parameters["posts_per_page"]);
+        $this->assertEquals(0, $parameters["offset"]);
+
+        $builder->setLimit(8);
+        $builder->setOffset(2);
+        $parameters = $builder->getParameters();
+
+        $this->assertEquals(8, $parameters["posts_per_page"]);
+        $this->assertEquals(2, $parameters["offset"]);
+    }
+
 }

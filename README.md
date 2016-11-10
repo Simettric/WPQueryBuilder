@@ -59,3 +59,44 @@ Retrieve all CUSTOM POST TYPE and PAGES
            $wp_query = $builder->addPostType('your_custom')
                                ->addPostType(Builder::POST_TYPE_PAGE)
                                ->getWPQuery();
+                               
+                               
+### LIMITS AND OFFSETS
+
+Retrieve only 10 contents
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->setLimit(10)->getWPQuery();
+            
+           
+Retrieve 20 contents starting from the 10th position
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->setLimit(20)->setOffset(10)->getWPQuery();
+
+### RETRIEVING
+
+
+Get the WPQuery object
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->getWPQuery();
+            
+            
+Get the Posts array
+
+            $builder = new Builder();
+    
+            $posts = $builder->getPosts();
+            
+            
+Get the WPQuery parameters array
+
+            $builder = new Builder();
+    
+            $params = $builder->getParameters();
+            
+            $query = new WP_Query($params);

@@ -36,6 +36,11 @@ class Builder
      */
     private $mainMetaQueryCollection=null;
 
+    /**
+     * @var string
+     */
+    private $search_parameter;
+
 
     public function __construct()
     {
@@ -92,6 +97,17 @@ class Builder
     {
         $this->posts_per_page = -1;
         $this->offset = 0;
+    }
+
+    /**
+     * @param $search
+     * @return $this
+     */
+    public function search($search)
+    {
+        $this->search_parameter = $search;
+
+        return $this;
     }
 
 
@@ -224,6 +240,11 @@ class Builder
     private function hydrateParametersArray()
     {
         $this->parameters["post_type"]  = $this->getPostTypeParametersArray();
+
+        if($this->search_parameter)
+        {
+            $this->parameters["s"] = $this->search_parameter;
+        }
 
         if($this->mainMetaQueryCollection)
         {

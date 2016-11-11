@@ -68,6 +68,16 @@ Retrieve all CUSTOM POST TYPE and PAGES
                                ->addPostType(Builder::POST_TYPE_PAGE)
                                ->getWPQuery();
                                
+    
+### SEARCH
+
+Search contents
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->search("search query")->getWPQuery();
+
+      
       
 ### ORDERBY
 

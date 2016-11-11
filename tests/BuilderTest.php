@@ -4,6 +4,8 @@ namespace Simettric\WPQueryBuilder\Test;
 use Simettric\WPQueryBuilder\Builder;
 use Simettric\WPQueryBuilder\MetaQuery;
 use Simettric\WPQueryBuilder\MetaQueryCollection;
+use Simettric\WPQueryBuilder\TaxonomyQuery;
+use Simettric\WPQueryBuilder\TaxonomyQueryCollection;
 
 /**
  * Created by Asier Marqués <asiermarques@gmail.com>
@@ -108,6 +110,42 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("ASC", $parameters["order"]);
         $this->assertEquals("date title", $parameters["order_by"]);
+    }
+
+    public function testTaxonomyQueryParameter()
+    {
+        $builder = new Builder();
+        $builder->createMainTaxonomyQuery();
+        $builder->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('blue')));
+
+        $parameters = $builder->getParameters();
+
+        $this->assertArrayHasKey('tax_query', $parameters);
+
+        $this->assertEquals("AND", $parameters["tax_query"]["relation"]);
+        $this->assertEquals("category", $parameters["tax_query"][0]["taxonomy"]);
+        $this->assertEquals("slug", $parameters["tax_query"][0]["field"]);
+        $this->assertEquals("blue", $parameters["tax_query"][0]["terms"][0]);
+
+        $collection = new TaxonomyQueryCollection('OR');
+        $collection->add(TaxonomyQuery::create('tag', 'slug', array('pets')));
+        $builder->addTaxonomyQueryCollection($collection);
+
+        $parameters = $builder->getParameters();
+
+        $this->assertEquals("OR", $parameters["tax_query"][1]["relation"]);
+
+    }
+
+
+    public function testSearchParameter()
+    {
+        $builder = new Builder();
+
+        $parameters = $builder->search('test')->getParameters();
+
+        $this->assertArrayHasKey('s', $parameters);
+        $this->assertEquals("test", $parameters["s"]);
     }
 
 }

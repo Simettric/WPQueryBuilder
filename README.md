@@ -48,6 +48,46 @@ Retrieve any post type where post meta price is equal or greater than 10 OR size
                      
            $wp_query = $builder->addMetaQueryCollection($condition)
                                ->getWPQuery();  
+                               
+### TAXONOMY QUERIES
+
+
+Retrieve the contents under ("pets" OR "tools") values in the "category" taxonomy AND in under 'sweet' in "custom" taxonomy
+
+           $builder = new Builder();
+           $wp_query = $builder->createMainTaxonomyQuery("AND")
+                                ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools')))
+                                ->addTaxonomyQuery(TaxonomyQuery::create('custom', 'slug', array('sweet))
+                                ->getWPQuery();
+                                
+                                
+Retrieve the contents under ("pets" OR "tools") values in the "category" taxonomy BUT exclude contents in their children
+
+           $builder = new Builder();
+           $wp_query = $builder->createMainTaxonomyQuery("AND")
+                                ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools'), false))
+                                ->getWPQuery();
+                                
+Retrieve the contents those are NOT under ("pets" OR "tools") values in the "category" taxonomy
+
+           $builder = new Builder();
+           $wp_query = $builder->createMainTaxonomyQuery("AND")
+                                ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools'), true, 'NOT IN'))
+                                ->getWPQuery();
+                                
+You can have nested relations too
+
+          $builder = new Builder();
+          
+          $collection = new TaxonomyQueryCollection('OR');
+          $collection->add(TaxonomyQuery::create('tag', 'slug', array('cats')));
+          $collection->add(TaxonomyQuery::create('custom', 'slug', array('sweet')));
+          
+          $wp_query = $builder->createMainTaxonomyQuery("AND")
+                               ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools')))
+                               ->addTaxonomyQueryCollection($collection)
+                               ->getWPQuery();     
+                                                       
 
 ### POST TYPES
 

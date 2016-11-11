@@ -7,6 +7,7 @@
 
 namespace Simettric\WPQueryBuilder;
 use Simettric\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
+use Simettric\WPQueryBuilder\Exception\MainTaxonomyQueryAlreadyCreatedException;
 
 
 class Builder
@@ -35,6 +36,11 @@ class Builder
      * @var MetaQueryCollection
      */
     private $mainMetaQueryCollection=null;
+
+    /**
+     * @var TaxonomyQueryCollection
+     */
+    private $mainTaxonomyQueryCollection=null;
 
     /**
      * @var string
@@ -129,6 +135,23 @@ class Builder
     }
 
     /**
+     * @param string $where_type
+     * @param TaxonomyQueryCollection|null $collection
+     * @throws MainTaxonomyQueryAlreadyCreatedException
+     */
+    public function createMainTaxonomyQuery($where_type="AND", TaxonomyQueryCollection $collection=null)
+    {
+        if($this->mainTaxonomyQueryCollection)
+            throw new MainTaxonomyQueryAlreadyCreatedException();
+
+        $this->mainTaxonomyQueryCollection = new TaxonomyQueryCollection($where_type);
+
+        if($collection)
+            $this->mainTaxonomyQueryCollection->addCollection($collection);
+
+    }
+
+    /**
      * the query builder must to return all the content types
      */
     public function setAnyPostType()
@@ -204,6 +227,34 @@ class Builder
         return $this;
     }
 
+    /**
+     * @param TaxonomyQueryCollection $collection
+     * @return $this
+     */
+    public function addTaxonomyQueryCollection(TaxonomyQueryCollection $collection)
+    {
+        if(!$this->mainTaxonomyQueryCollection)
+            $this->createMainMetaQuery();
+
+        $this->mainTaxonomyQueryCollection->addCollection($collection);
+
+        return $this;
+    }
+
+
+    /**
+     * @param TaxonomyQuery $metaQuery
+     * @return $this
+     */
+    public function addTaxonomyQuery(TaxonomyQuery $metaQuery)
+    {
+        if(!$this->mainTaxonomyQueryCollection)
+            $this->createMainTaxonomyQuery();
+
+        $this->mainTaxonomyQueryCollection->add($metaQuery);
+
+        return $this;
+    }
 
     /**
      * @return array
@@ -251,6 +302,11 @@ class Builder
             $this->parameters["meta_query"] = $this->getMetaParametersArray($this->mainMetaQueryCollection);
         }
 
+        if($this->mainTaxonomyQueryCollection)
+        {
+            $this->parameters["tax_query"] = $this->getTaxonomyParametersArray($this->mainTaxonomyQueryCollection);
+        }
+
         $this->hydrateLimitsParameters();
 
         $this->hydrateOrderParameters();
@@ -259,19 +315,19 @@ class Builder
 
     /**
      * @param MetaQueryCollection $collection
-     * @param array $meta_array
+     * @param array $return_array
      * @return array
      */
-    private function getMetaParametersArray(MetaQueryCollection $collection, $meta_array=array())
+    private function getMetaParametersArray(MetaQueryCollection $collection, $return_array=array())
     {
 
-        $meta_array["relation"] = $collection->getRelationType();
+        $return_array["relation"] = $collection->getRelationType();
 
         foreach ($collection as $meta)
         {
             if($meta instanceof MetaQuery)
             {
-                $meta_array[] = array(
+                $return_array[] = array(
                     "key"     => $meta->key,
                     "value"   => $meta->value,
                     "compare" => $meta->compare
@@ -279,11 +335,42 @@ class Builder
 
             }else if($meta instanceof MetaQueryCollection)
             {
-                $meta_array[] = $this->getMetaParametersArray($meta);
+                $return_array[] = $this->getMetaParametersArray($meta);
             }
         }
 
-        return $meta_array;
+        return $return_array;
+    }
+
+    /**
+     * @param TaxonomyQueryCollection $collection
+     * @param array $return_array
+     * @return array
+     */
+    private function getTaxonomyParametersArray(TaxonomyQueryCollection $collection, $return_array=array())
+    {
+
+        $return_array["relation"] = $collection->getRelationType();
+
+        foreach ($collection as $tax)
+        {
+            if($tax instanceof TaxonomyQuery)
+            {
+                $return_array[] = array(
+                    "taxonomy"         => $tax->taxonomy,
+                    "field"            => $tax->field,
+                    "terms"            => $tax->terms,
+                    "include_children" => $tax->include_children,
+                    "operator"         => $tax->operator
+                );
+
+            }else if($tax instanceof TaxonomyQueryCollection)
+            {
+                $return_array[] = $this->getTaxonomyParametersArray($tax);
+            }
+        }
+
+        return $return_array;
     }
 
 

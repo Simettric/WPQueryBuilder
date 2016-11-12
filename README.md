@@ -192,3 +192,15 @@ Get the WPQuery parameters array
             $params = $builder->getParameters();
             
             $query = new WP_Query($params);
+            
+  
+Get an array containing only the post IDs. This is useful when you want to return all records without pagination from a large recordset in order to avoid memory issues.
+
+
+            $builder = new Builder();
+    
+            $ids = $builder->getPostIDsOnly();
+            
+            $builder = new Builder();
+            
+            $wp_query = $builder->inPostIDs($ids)->getWPQuery();

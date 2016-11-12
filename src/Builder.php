@@ -321,6 +321,20 @@ class Builder
         return $wp_query->get_posts();
     }
 
+    /**
+     * @return array
+     */
+    public function getPostIDs()
+    {
+        $this->hydrateParametersArray();
+
+        $this->parameters["fields"] = "ids";
+
+        $wp_query = $this->getWPQuery();
+
+        return $wp_query->get_posts();
+    }
+
 
     /**
      * @return void

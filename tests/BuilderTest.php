@@ -70,6 +70,13 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(Builder::POST_TYPE_ANY, $parameters["post_type"]);
 
+        $builder->addPostType([Builder::POST_TYPE_PAGE,Builder::POST_TYPE_POST]);
+        $parameters = $builder->getParameters();
+
+        $this->assertCount(2, $parameters["post_type"]);
+        $this->assertContains(Builder::POST_TYPE_POST, $parameters["post_type"]);
+        $this->assertContains(Builder::POST_TYPE_PAGE, $parameters["post_type"]);
+
 
     }
 
@@ -93,6 +100,12 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(8, $parameters["posts_per_page"]);
         $this->assertEquals(2, $parameters["offset"]);
+
+        $builder->withAnyLimit();
+        $parameters = $builder->getParameters();
+
+        $this->assertEquals(-1, $parameters["posts_per_page"]);
+        $this->assertEquals(0, $parameters["offset"]);
     }
 
     public function testOrderParameters()

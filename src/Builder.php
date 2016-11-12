@@ -47,6 +47,16 @@ class Builder
      */
     private $search_parameter;
 
+    /**
+     * @var array|null
+     */
+    private $in_array;
+
+    /**
+     * @var array|null
+     */
+    private $not_in_array;
+
 
     public function __construct()
     {
@@ -112,6 +122,33 @@ class Builder
     public function search($search)
     {
         $this->search_parameter = $search;
+
+        return $this;
+    }
+
+
+    /**
+     * @param $in_array array
+     * @return $this
+     */
+    public function inPostIDs($in_array)
+    {
+        $in_array = !is_array($in_array) ? array($in_array) : $in_array;
+
+        $this->in_array = $in_array;
+
+        return $this;
+    }
+
+    /**
+     * @param $in_array array
+     * @return $this
+     */
+    public function notInPostIDs($in_array)
+    {
+        $in_array = !is_array($in_array) ? array($in_array) : $in_array;
+
+        $this->not_in_array = $in_array;
 
         return $this;
     }
@@ -310,6 +347,8 @@ class Builder
         $this->hydrateLimitsParameters();
 
         $this->hydrateOrderParameters();
+
+        $this->hydrateInParameters();
     }
 
 
@@ -413,6 +452,24 @@ class Builder
         {
             $this->parameters["order_by"] = $this->order_by;
             $this->parameters["order"]    = $this->order_direction?:"DESC";
+        }
+
+    }
+
+    /**
+     * @return void
+     */
+    private function hydrateInParameters()
+    {
+
+        if(is_array($this->in_array))
+        {
+            $this->parameters["post__in"] = $this->in_array;
+        }
+
+        if(is_array($this->not_in_array))
+        {
+            $this->parameters["post__not_in"] = $this->not_in_array;
         }
 
     }

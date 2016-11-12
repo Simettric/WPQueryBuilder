@@ -117,6 +117,20 @@ Search contents
     
             $wp_query = $builder->search("search query")->getWPQuery();
 
+     
+### IN and NOT IN
+
+Retrieve contents with ID in array of IDS
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->inPostIDs(array(1,2,3))->getWPQuery();
+            
+Retrieve contents with ID not in array of IDS
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->notInPostIDs(array(1,2,3))->getWPQuery();
       
       
 ### ORDERBY

@@ -148,4 +148,19 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("test", $parameters["s"]);
     }
 
+    public function testInParameters()
+    {
+        $builder = new Builder();
+
+        $parameters = $builder->inPostIDs(array(1, 2))->getParameters();
+
+        $this->assertArrayHasKey('post__in', $parameters);
+        $this->assertContains(1, $parameters["post__in"]);
+
+        $parameters = $builder->notInPostIDs(array(3))->getParameters();
+
+        $this->assertArrayHasKey('post__not_in', $parameters);
+        $this->assertContains(3, $parameters["post__not_in"]);
+    }
+
 }

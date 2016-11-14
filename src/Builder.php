@@ -63,20 +63,26 @@ class Builder
         $this->post_types = static::POST_TYPE_ANY;
     }
 
+
     /**
      * @param $limit
+     * @return $this
      */
     public function setLimit($limit)
     {
         $this->posts_per_page = $limit;
+        return $this;
     }
+
 
     /**
      * @param $offset
+     * @return $this
      */
     public function setOffset($offset)
     {
         $this->offset = $offset;
+        return $this;
     }
 
 

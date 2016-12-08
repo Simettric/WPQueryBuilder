@@ -114,11 +114,14 @@ class Builder
 
     /**
      * The query builder must to return all the content
+     * @return $this
      */
     public function withAnyLimit()
     {
         $this->posts_per_page = -1;
         $this->offset = 0;
+
+        return $this;
     }
 
     /**

@@ -38,6 +38,8 @@ class Builder
 
     private $post_status=array();
 
+    private $author = false;
+
     /**
      * @var MetaQueryCollection
      */
@@ -67,6 +69,17 @@ class Builder
     public function __construct()
     {
         $this->post_types = static::POST_TYPE_ANY;
+    }
+
+
+    /**
+     * @param $author_id
+     * @return $this
+     */
+    public function setAuthor($author_id)
+    {
+        $this->author = $author_id;
+        return $this;
     }
 
 
@@ -391,6 +404,11 @@ class Builder
     {
         $this->parameters["post_type"]    = $this->getPostTypeParametersArray();
         $this->parameters["post_status"]  = $this->getPostStatusParametersArray();
+
+        if($this->author)
+        {
+            $this->parameters["author"] = $this->author;
+        }
 
         if($this->search_parameter)
         {

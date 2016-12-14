@@ -18,6 +18,10 @@ class Builder
     const POST_TYPE_ATTACHMENT = 'attachment';
     const POST_TYPE_MENU_ITEM  = 'nav_menu_item';
     const POST_TYPE_ANY        = 'any';
+    const POST_STATUS_ANY      = 'any';
+
+    const POST_STATUS_PUBLISHED = 'publish';
+    const POST_STATUS_DRAFT     = 'draft';
 
     private $offset=0;
     private $posts_per_page;
@@ -31,6 +35,8 @@ class Builder
     private $parameters=array();
 
     private $post_types=array();
+
+    private $post_status=array();
 
     /**
      * @var MetaQueryCollection
@@ -205,6 +211,13 @@ class Builder
         $this->post_types = static::POST_TYPE_ANY;
     }
 
+    /**
+     * the query builder must to return posts with any status
+     */
+    public function setAnyPostStatus()
+    {
+        $this->post_types = static::POST_TYPE_ANY;
+    }
 
     /**
      * @param $type
@@ -232,6 +245,32 @@ class Builder
         return $this;
     }
 
+
+    /**
+     * @param $status
+     * @return $this
+     */
+    public function addPostStatus($status)
+    {
+        if($this->post_status == static::POST_STATUS_ANY)
+        {
+            $this->post_status = array();
+        }
+
+        if(is_array($status))
+        {
+            foreach ($status as $value)
+            {
+                $this->post_status[$value] = $value;
+            }
+
+        }else{
+
+            $this->post_status[$status] = $status;
+        }
+
+        return $this;
+    }
     /**
      * @param $type
      * @return $this
@@ -350,7 +389,8 @@ class Builder
      */
     private function hydrateParametersArray()
     {
-        $this->parameters["post_type"]  = $this->getPostTypeParametersArray();
+        $this->parameters["post_type"]    = $this->getPostTypeParametersArray();
+        $this->parameters["post_status"]  = $this->getPostStatusParametersArray();
 
         if($this->search_parameter)
         {
@@ -449,6 +489,19 @@ class Builder
         return static::POST_TYPE_ANY;
     }
 
+
+    /**
+     * @return array|string
+     */
+    private function getPostStatusParametersArray()
+    {
+        if(is_array($this->post_status))
+        {
+            return array_values($this->post_status);
+        }
+
+        return static::POST_STATUS_ANY;
+    }
 
     /**
      * @return void

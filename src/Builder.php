@@ -185,6 +185,7 @@ class Builder
     /**
      * @param string $where_type
      * @param MetaQueryCollection|null $collection
+     * @return $this
      * @throws MainMetaQueryAlreadyCreatedException
      */
     public function createMainMetaQuery($where_type="AND", MetaQueryCollection $collection=null)
@@ -197,11 +198,15 @@ class Builder
         if($collection)
             $this->mainMetaQueryCollection->addCollection($collection);
 
+        return $this;
+
     }
+
 
     /**
      * @param string $where_type
      * @param TaxonomyQueryCollection|null $collection
+     * @return $this
      * @throws MainTaxonomyQueryAlreadyCreatedException
      */
     public function createMainTaxonomyQuery($where_type="AND", TaxonomyQueryCollection $collection=null)
@@ -214,6 +219,7 @@ class Builder
         if($collection)
             $this->mainTaxonomyQueryCollection->addCollection($collection);
 
+        return $this;
     }
 
     /**

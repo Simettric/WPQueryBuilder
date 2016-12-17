@@ -217,19 +217,21 @@ class Builder
     }
 
     /**
-     * the query builder must to return all the content types
+     * @return $this
      */
     public function setAnyPostType()
     {
         $this->post_types = static::POST_TYPE_ANY;
+        return $this;
     }
 
     /**
-     * the query builder must to return posts with any status
+     * @return $this
      */
     public function setAnyPostStatus()
     {
         $this->post_types = static::POST_TYPE_ANY;
+        return $this;
     }
 
     /**

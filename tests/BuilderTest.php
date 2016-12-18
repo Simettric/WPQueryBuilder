@@ -117,7 +117,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('order', $parameters);
         $this->assertArrayHasKey('orderby', $parameters);
         $this->assertEquals("DESC", $parameters["order"]);
-        $this->assertEquals("date", $parameters["order_by"]);
+        $this->assertEquals("date", $parameters["orderby"]);
 
         $parameters = $builder->addOrderBy('title')->setOrderDirection("ASC")->getParameters();
 

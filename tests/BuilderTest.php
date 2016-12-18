@@ -115,14 +115,14 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
         $parameters = $builder->addOrderBy('date')->getParameters();
 
         $this->assertArrayHasKey('order', $parameters);
-        $this->assertArrayHasKey('order_by', $parameters);
+        $this->assertArrayHasKey('orderby', $parameters);
         $this->assertEquals("DESC", $parameters["order"]);
         $this->assertEquals("date", $parameters["order_by"]);
 
         $parameters = $builder->addOrderBy('title')->setOrderDirection("ASC")->getParameters();
 
         $this->assertEquals("ASC", $parameters["order"]);
-        $this->assertEquals("date title", $parameters["order_by"]);
+        $this->assertEquals("date title", $parameters["orderby"]);
     }
 
     public function testTaxonomyQueryParameter()

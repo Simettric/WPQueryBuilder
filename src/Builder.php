@@ -552,8 +552,9 @@ class Builder
 
         if($this->order_by)
         {
-            $this->parameters["order_by"] = $this->order_by;
-            $this->parameters["order"]    = $this->order_direction?:"DESC";
+
+            $this->parameters["orderby"] = $this->order_by;
+            $this->parameters["order"]   = $this->order_direction?$this->order_direction:"DESC";
         }
 
     }

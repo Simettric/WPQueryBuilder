@@ -236,7 +236,7 @@ class Builder
      */
     public function setAnyPostStatus()
     {
-        $this->post_types = static::POST_TYPE_ANY;
+        $this->post_status = static::POST_STATUS_ANY;
         return $this;
     }
 

@@ -112,17 +112,34 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new Builder();
 
-        $parameters = $builder->addOrderBy('date')->getParameters();
+        $parameters = $builder->setOrderBy('date')->getParameters();
 
         $this->assertArrayHasKey('order', $parameters);
         $this->assertArrayHasKey('orderby', $parameters);
         $this->assertEquals("DESC", $parameters["order"]);
         $this->assertEquals("date", $parameters["orderby"]);
 
-        $parameters = $builder->addOrderBy('title')->setOrderDirection("ASC")->getParameters();
+        $parameters = $builder->addOrderBy('title', "ASC")->getParameters();
 
-        $this->assertEquals("ASC", $parameters["order"]);
-        $this->assertEquals("date title", $parameters["orderby"]);
+        $this->assertArrayHasKey("title", $parameters["orderby"]);
+        $this->assertArrayHasKey("date", $parameters["orderby"]);
+
+        $this->assertEquals("DESC", $parameters["orderby"]["date"]);
+        $this->assertEquals("ASC", $parameters["orderby"]["title"]);
+
+        $parameters = $builder->setOrderByMeta('color', "DESC")->getParameters();
+
+        $this->assertArrayHasKey("meta_value", $parameters["orderby"]);
+        $this->assertEquals("color", $parameters["meta_key"]);
+        $this->assertEquals("DESC", $parameters["orderby"]["meta_value"]);
+
+        $builder = new Builder();
+        $parameters = $builder->setOrderByMeta('price', "ASC", true)->getParameters();
+
+        $this->assertArrayHasKey("meta_value_num", $parameters["orderby"]);
+        $this->assertEquals("price", $parameters["meta_key"]);
+        $this->assertEquals("ASC", $parameters["orderby"]["meta_value_num"]);
+
     }
 
     public function testTaxonomyQueryParameter()

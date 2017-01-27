@@ -6,6 +6,7 @@
  */
 
 namespace Simettric\WPQueryBuilder;
+use Collections\Exceptions\Exception;
 use Simettric\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
 use Simettric\WPQueryBuilder\Exception\MainTaxonomyQueryAlreadyCreatedException;
 
@@ -125,22 +126,28 @@ class Builder
      */
     public function setOrderBy($order_by)
     {
-        if(false===strpos($this->order_by, $order_by))
-        {
-            $this->order_by = trim($this->order_by . " " . $order_by);
-        }
-
+        $this->order_by = $order_by;
         return $this;
     }
 
     /**
      * @param $order_by
      * @return $this
-     * @deprecated
      */
-    public function addOrderBy($order_by)
+    public function addOrderBy($order_by, $direction="DESC")
     {
-        return $this->setOrderBy($order_by);
+        if(!$this->order_by)
+            $this->order_by = array();
+
+        if($this->order_by && !is_array($this->order_by))
+        {
+            $this->order_by = array((string)$this->order_by => $this->order_direction);
+            $this->order_direction = null;
+        }
+
+        $this->order_by[$order_by] = $direction;
+
+        return $this;
     }
 
 
@@ -149,9 +156,22 @@ class Builder
      * @param bool $numeric
      * @return $this
      */
-    public function setOrderByMeta($meta_key, $numeric=false)
+    public function setOrderByMeta($meta_key, $direction = "DESC", $numeric=false)
     {
-        $numeric ? $this->meta_key_order_numeric = $meta_key : $this->meta_key_order = $meta_key;
+        if($this->meta_key_order || $this->meta_key_order_numeric)
+            throw new \Exception("You only can order by one meta key");
+
+        if($numeric)
+        {
+
+            $this->meta_key_order_numeric     = $meta_key;
+            $this->order_by["meta_value_num"] = $direction;
+        }else{
+            $this->meta_key_order             = $meta_key;
+            $this->order_by["meta_value"]     = $direction;
+        }
+
+
 
         return $this;
     }
@@ -579,7 +599,10 @@ class Builder
         {
 
             $this->parameters["orderby"] = $this->order_by;
-            $this->parameters["order"]   = $this->order_direction?$this->order_direction:"DESC";
+            if(!is_array($this->order_by))
+            {
+                $this->parameters["order"]   = $this->order_direction?$this->order_direction:"DESC";
+            }
         }
 
         if($this->meta_key_order || $this->meta_key_order_numeric)
@@ -587,15 +610,12 @@ class Builder
 
             if($this->meta_key_order)
             {
-                $this->parameters["orderby"] = "meta_value";
                 $this->parameters["meta_key"] = $this->meta_key_order;
 
             }else{
-                $this->parameters["orderby"] = "meta_value_numeric";
                 $this->parameters["meta_key"] = $this->meta_key_order_numeric;
             }
 
-            $this->parameters["order"]   = $this->order_direction?$this->order_direction:"DESC";
         }
 
     }

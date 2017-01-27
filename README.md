@@ -151,19 +151,27 @@ Order contents by date, ascending
                                 ->getWPQuery();
                                 
                                 
+Order contents by title descending and date, ascending
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->addOrderBy("title", "DESC")
+                                ->addOrderBy("date", "ASC")
+                                ->getWPQuery();
+                                
+                                
 Order contents by custom meta
 
             $builder = new Builder();
     
-            $wp_query = $builder->setOrderByMeta("color")->getWPQuery();
+            $wp_query = $builder->setOrderByMeta("color", "DESC")->getWPQuery();
             
             
 Order contents by custom numeric meta
 
             $builder = new Builder();
     
-            $wp_query = $builder->setOrderByMeta("price", true)
-                                ->setOrderDirection("ASC")
+            $wp_query = $builder->setOrderByMeta("price", "ASC", true)
                                 ->getWPQuery();
             
             

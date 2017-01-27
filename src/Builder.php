@@ -40,6 +40,9 @@ class Builder
 
     private $author = false;
 
+    private $meta_key_order = false;
+    private $meta_key_order_numeric = false;
+
     /**
      * @var MetaQueryCollection
      */
@@ -116,17 +119,39 @@ class Builder
         return $this;
     }
 
-
     /**
      * @param $order_by
      * @return $this
      */
-    public function addOrderBy($order_by)
+    public function setOrderBy($order_by)
     {
         if(false===strpos($this->order_by, $order_by))
         {
             $this->order_by = trim($this->order_by . " " . $order_by);
         }
+
+        return $this;
+    }
+
+    /**
+     * @param $order_by
+     * @return $this
+     * @deprecated
+     */
+    public function addOrderBy($order_by)
+    {
+        return $this->setOrderBy($order_by);
+    }
+
+
+    /**
+     * @param $meta_key
+     * @param bool $numeric
+     * @return $this
+     */
+    public function setOrderByMeta($meta_key, $numeric=false)
+    {
+        $numeric ? $this->meta_key_order_numeric = $meta_key : $this->meta_key_order = $meta_key;
 
         return $this;
     }
@@ -554,6 +579,22 @@ class Builder
         {
 
             $this->parameters["orderby"] = $this->order_by;
+            $this->parameters["order"]   = $this->order_direction?$this->order_direction:"DESC";
+        }
+
+        if($this->meta_key_order || $this->meta_key_order_numeric)
+        {
+
+            if($this->meta_key_order)
+            {
+                $this->parameters["orderby"] = "meta_value";
+                $this->parameters["meta_key"] = $this->meta_key_order;
+
+            }else{
+                $this->parameters["orderby"] = "meta_value_numeric";
+                $this->parameters["meta_key"] = $this->meta_key_order_numeric;
+            }
+
             $this->parameters["order"]   = $this->order_direction?$this->order_direction:"DESC";
         }
 

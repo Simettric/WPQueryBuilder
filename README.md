@@ -139,18 +139,32 @@ Order contents by title descending
 
             $builder = new Builder();
     
-            $wp_query = $builder->addOrderBy("title")->getWPQuery();
+            $wp_query = $builder->setOrderBy("title")->getWPQuery();
             
            
-Order contents by title with date fallback, ascending
+Order contents by date, ascending
 
             $builder = new Builder();
     
-            $wp_query = $builder->addOrderBy("title")
-                                ->addOrderBy("date")
+            $wp_query = $builder->setOrderBy("date")
                                 ->setOrderDirection("ASC")
                                 ->getWPQuery();
                                 
+                                
+Order contents by custom meta
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->setOrderByMeta("color")->getWPQuery();
+            
+            
+Order contents by custom numeric meta
+
+            $builder = new Builder();
+    
+            $wp_query = $builder->setOrderByMeta("price", true)
+                                ->setOrderDirection("ASC")
+                                ->getWPQuery();
             
             
 ### LIMITS AND OFFSETS

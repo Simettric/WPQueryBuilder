@@ -503,7 +503,8 @@ class Builder
                 $return_array[] = array(
                     "key"     => $meta->key,
                     "value"   => $meta->value,
-                    "compare" => $meta->compare
+                    "compare" => $meta->compare,
+                    "type"    => $meta->type,
                 );
 
             }else if($meta instanceof MetaQueryCollection)

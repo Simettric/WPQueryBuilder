@@ -57,7 +57,7 @@ Retrieve the contents under ("pets" OR "tools") values in the "category" taxonom
            $builder = new Builder();
            $wp_query = $builder->createMainTaxonomyQuery("AND")
                                 ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools')))
-                                ->addTaxonomyQuery(TaxonomyQuery::create('custom', 'slug', array('sweet))
+                                ->addTaxonomyQuery(TaxonomyQuery::create('custom', 'slug', array('sweet')))
                                 ->getWPQuery();
                                 
                                 
@@ -226,3 +226,5 @@ Get an array containing only the post IDs. This is useful when you want to retur
             $builder = new Builder();
             
             $wp_query = $builder->inPostIDs($ids)->getWPQuery();
+
+

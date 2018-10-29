@@ -20,7 +20,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testMetaParameters()
     {
         $builder = new Builder();
-        $builder->createMainMetaQuery();
+        $builder->createMetaQuery();
         $builder->addMetaQuery(MetaQuery::create('test', 'value_test'));
 
         $parameters = $builder->getParameters();
@@ -146,7 +146,7 @@ class BuilderTest extends \PHPUnit_Framework_TestCase
     public function testTaxonomyQueryParameter()
     {
         $builder = new Builder();
-        $builder->createMainTaxonomyQuery();
+        $builder->createTaxonomyQuery();
         $builder->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', ['blue']));
 
         $parameters = $builder->getParameters();

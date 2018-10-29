@@ -20,7 +20,7 @@ USAGE
 Retrieve any post type where post meta color value equals to blue OR size meta value equals to XL
 
            $builder = new Builder();
-           $wp_query = $builder->createMainMetaQuery("OR")
+           $wp_query = $builder->createMetaQuery("OR")
                                 ->addMetaQuery(MetaQuery::create('color', 'blue'))
                                 ->addMetaQuery(MetaQuery::create('size', 'XL'))
                                 ->getWPQuery();
@@ -29,7 +29,7 @@ Retrieve any post type where post meta color value equals to blue OR size meta v
 Retrieve any post type where post meta price is equal or greater than 10 OR size meta value equals to XL
                
            $builder = new Builder();
-           $wp_query = $builder->createMainMetaQuery("AND")
+           $wp_query = $builder->createMetaQuery("AND")
                                 ->addMetaQuery(MetaQuery::create('price', 10, '>=', 'NUMERIC'))
                                 ->addMetaQuery(MetaQuery::create('size', 'XL'))
                                 ->getWPQuery();  
@@ -38,7 +38,7 @@ Retrieve any post type where post meta price is equal or greater than 10 OR size
  Retrieve any post type where post meta price is equal or greater than 10 AND (size meta value equals to XL OR post meta color value equals to blue)                              
                                 
            $builder = new Builder();
-           $builder->createMainMetaQuery("AND")
+           $builder->createMetaQuery("AND")
                    ->addMetaQuery(MetaQuery::create('price', 10, '>=', 'NUMERIC'));
                         
            $condition = new MetaQueryCollection('OR');
@@ -55,7 +55,7 @@ Retrieve any post type where post meta price is equal or greater than 10 OR size
 Retrieve the contents under ("pets" OR "tools") values in the "category" taxonomy AND in under 'sweet' in "custom" taxonomy
 
            $builder = new Builder();
-           $wp_query = $builder->createMainTaxonomyQuery("AND")
+           $wp_query = $builder->createTaxonomyQuery("AND")
                                 ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools')))
                                 ->addTaxonomyQuery(TaxonomyQuery::create('custom', 'slug', array('sweet')))
                                 ->getWPQuery();
@@ -64,14 +64,14 @@ Retrieve the contents under ("pets" OR "tools") values in the "category" taxonom
 Retrieve the contents under ("pets" OR "tools") values in the "category" taxonomy BUT exclude contents in their children
 
            $builder = new Builder();
-           $wp_query = $builder->createMainTaxonomyQuery("AND")
+           $wp_query = $builder->createTaxonomyQuery("AND")
                                 ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools'), false))
                                 ->getWPQuery();
                                 
 Retrieve the contents those are NOT under ("pets" OR "tools") values in the "category" taxonomy
 
            $builder = new Builder();
-           $wp_query = $builder->createMainTaxonomyQuery("AND")
+           $wp_query = $builder->createTaxonomyQuery("AND")
                                 ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools'), true, 'NOT IN'))
                                 ->getWPQuery();
                                 
@@ -83,7 +83,7 @@ You can have nested relations too
           $collection->add(TaxonomyQuery::create('tag', 'slug', array('cats')));
           $collection->add(TaxonomyQuery::create('custom', 'slug', array('sweet')));
           
-          $wp_query = $builder->createMainTaxonomyQuery("AND")
+          $wp_query = $builder->createTaxonomyQuery("AND")
                                ->addTaxonomyQuery(TaxonomyQuery::create('category', 'slug', array('pets', 'tools')))
                                ->addTaxonomyQueryCollection($collection)
                                ->getWPQuery();     

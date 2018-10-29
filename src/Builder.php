@@ -248,7 +248,7 @@ class Builder
      * @return $this
      * @throws MainMetaQueryAlreadyCreatedException
      */
-    public function createMainMetaQuery($where_type = "AND", MetaQueryCollection $collection = null)
+    public function createMetaQuery($where_type = "AND", MetaQueryCollection $collection = null)
     {
         if ($this->mainMetaQueryCollection) {
             throw new MainMetaQueryAlreadyCreatedException();
@@ -272,7 +272,7 @@ class Builder
      * @return $this
      * @throws MainTaxonomyQueryAlreadyCreatedException
      */
-    public function createMainTaxonomyQuery($where_type = "AND", TaxonomyQueryCollection $collection = null)
+    public function createTaxonomyQuery($where_type = "AND", TaxonomyQueryCollection $collection = null)
     {
         if ($this->mainTaxonomyQueryCollection) {
             throw new MainTaxonomyQueryAlreadyCreatedException();
@@ -378,7 +378,7 @@ class Builder
     public function addMetaQueryCollection(MetaQueryCollection $collection)
     {
         if ( ! $this->mainMetaQueryCollection) {
-            $this->createMainMetaQuery();
+            $this->createMetaQuery();
         }
 
         $this->mainMetaQueryCollection->addCollection($collection);
@@ -395,7 +395,7 @@ class Builder
     public function addMetaQuery(MetaQuery $metaQuery)
     {
         if ( ! $this->mainMetaQueryCollection) {
-            $this->createMainMetaQuery();
+            $this->createMetaQuery();
         }
 
         $this->mainMetaQueryCollection->add($metaQuery);
@@ -411,7 +411,7 @@ class Builder
     public function addTaxonomyQueryCollection(TaxonomyQueryCollection $collection)
     {
         if ( ! $this->mainTaxonomyQueryCollection) {
-            $this->createMainMetaQuery();
+            $this->createMetaQuery();
         }
 
         $this->mainTaxonomyQueryCollection->addCollection($collection);
@@ -428,7 +428,7 @@ class Builder
     public function addTaxonomyQuery(TaxonomyQuery $metaQuery)
     {
         if ( ! $this->mainTaxonomyQueryCollection) {
-            $this->createMainTaxonomyQuery();
+            $this->createTaxonomyQuery();
         }
 
         $this->mainTaxonomyQueryCollection->add($metaQuery);

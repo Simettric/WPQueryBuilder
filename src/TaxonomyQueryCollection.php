@@ -5,19 +5,19 @@
  * Time: 0:06
  */
 
-namespace Simettric\WPQueryBuilder;
+namespace Wenprise\WPQueryBuilder;
 
 
 class TaxonomyQueryCollection implements \Iterator
 {
 
-    private $position     = 0;
-    private $tax_queries = array();
+    private $position = 0;
+    private $tax_queries = [];
 
     private $where_type_relation;
 
 
-    public function __construct($where_type="AND")
+    public function __construct($where_type = "AND")
     {
         $this->where_type_relation = $where_type;
     }
@@ -33,6 +33,7 @@ class TaxonomyQueryCollection implements \Iterator
 
     /**
      * @param TaxonomyQuery $query
+     *
      * @return $this
      */
     public function add(TaxonomyQuery $query)
@@ -56,7 +57,7 @@ class TaxonomyQueryCollection implements \Iterator
      */
     public function current()
     {
-        return $this->tax_queries[$this->position];
+        return $this->tax_queries[ $this->position ];
     }
 
     /**
@@ -80,7 +81,7 @@ class TaxonomyQueryCollection implements \Iterator
      */
     public function valid()
     {
-        return isset($this->tax_queries[$this->position]);
+        return isset($this->tax_queries[ $this->position ]);
     }
 
     /**

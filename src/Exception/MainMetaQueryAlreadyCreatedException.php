@@ -5,7 +5,7 @@
  * Time: 0:22
  */
 
-namespace Simettric\WPQueryBuilder\Exception;
+namespace Wenprise\WPQueryBuilder\Exception;
 
 
 class MainMetaQueryAlreadyCreatedException extends \Exception

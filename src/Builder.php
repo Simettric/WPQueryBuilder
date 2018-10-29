@@ -5,39 +5,40 @@
  * Time: 22:36
  */
 
-namespace Simettric\WPQueryBuilder;
+namespace Wenprise\WPQueryBuilder;
+
 use Collections\Exceptions\Exception;
-use Simettric\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
-use Simettric\WPQueryBuilder\Exception\MainTaxonomyQueryAlreadyCreatedException;
+use Wenprise\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
+use Wenprise\WPQueryBuilder\Exception\MainTaxonomyQueryAlreadyCreatedException;
 
 
 class Builder
 {
-    const POST_TYPE_POST       = 'post';
-    const POST_TYPE_PAGE       = 'page';
-    const POST_TYPE_REVISION   = 'revision';
+    const POST_TYPE_POST = 'post';
+    const POST_TYPE_PAGE = 'page';
+    const POST_TYPE_REVISION = 'revision';
     const POST_TYPE_ATTACHMENT = 'attachment';
-    const POST_TYPE_MENU_ITEM  = 'nav_menu_item';
-    const POST_TYPE_ANY        = 'any';
-    const POST_STATUS_ANY      = 'any';
+    const POST_TYPE_MENU_ITEM = 'nav_menu_item';
+    const POST_TYPE_ANY = 'any';
+    const POST_STATUS_ANY = 'any';
 
     const POST_STATUS_PUBLISHED = 'publish';
-    const POST_STATUS_DRAFT     = 'draft';
+    const POST_STATUS_DRAFT = 'draft';
 
-    private $offset=0;
+    private $offset = 0;
     private $posts_per_page;
 
     private $order_by;
-    private $order_direction="DESC";
+    private $order_direction = "DESC";
 
     /**
      * @var array
      */
-    private $parameters=array();
+    private $parameters = [];
 
-    private $post_types=array();
+    private $post_types = [];
 
-    private $post_status=array();
+    private $post_status = [];
 
     private $author = false;
 
@@ -47,12 +48,12 @@ class Builder
     /**
      * @var MetaQueryCollection
      */
-    private $mainMetaQueryCollection=null;
+    private $mainMetaQueryCollection = null;
 
     /**
      * @var TaxonomyQueryCollection
      */
-    private $mainTaxonomyQueryCollection=null;
+    private $mainTaxonomyQueryCollection = null;
 
     /**
      * @var string
@@ -78,42 +79,49 @@ class Builder
 
     /**
      * @param $author_id
+     *
      * @return $this
      */
     public function setAuthor($author_id)
     {
         $this->author = $author_id;
+
         return $this;
     }
 
 
     /**
      * @param $limit
+     *
      * @return $this
      */
     public function setLimit($limit)
     {
         $this->posts_per_page = $limit;
+
         return $this;
     }
 
 
     /**
      * @param $offset
+     *
      * @return $this
      */
     public function setOffset($offset)
     {
         $this->offset = $offset;
+
         return $this;
     }
 
 
     /**
      * @param string $direction
+     *
      * @return $this
      */
-    public function setOrderDirection($direction="DESC")
+    public function setOrderDirection($direction = "DESC")
     {
         $this->order_direction = $direction;
 
@@ -122,55 +130,61 @@ class Builder
 
     /**
      * @param $order_by
+     *
      * @return $this
      */
     public function setOrderBy($order_by)
     {
         $this->order_by = $order_by;
+
         return $this;
     }
 
     /**
      * @param $order_by
+     * @param string $direction
+     *
      * @return $this
      */
-    public function addOrderBy($order_by, $direction="DESC")
+    public function addOrderBy($order_by, $direction = "DESC")
     {
-        if(!$this->order_by)
-            $this->order_by = array();
+        if ( ! $this->order_by) {
+            $this->order_by = [];
+        }
 
-        if($this->order_by && !is_array($this->order_by))
-        {
-            $this->order_by = array((string)$this->order_by => $this->order_direction);
+        if ($this->order_by && ! is_array($this->order_by)) {
+            $this->order_by        = [(string)$this->order_by => $this->order_direction];
             $this->order_direction = null;
         }
 
-        $this->order_by[$order_by] = $direction;
+        $this->order_by[ $order_by ] = $direction;
 
         return $this;
     }
 
 
     /**
-     * @param $meta_key
-     * @param bool $numeric
+     * @param        $meta_key
+     * @param string $direction
+     * @param bool   $numeric
+     *
      * @return $this
+     * @throws \Exception
      */
-    public function setOrderByMeta($meta_key, $direction = "DESC", $numeric=false)
+    public function setOrderByMeta($meta_key, $direction = "DESC", $numeric = false)
     {
-        if($this->meta_key_order || $this->meta_key_order_numeric)
+        if ($this->meta_key_order || $this->meta_key_order_numeric) {
             throw new \Exception("You only can order by one meta key");
-
-        if($numeric)
-        {
-
-            $this->meta_key_order_numeric     = $meta_key;
-            $this->order_by["meta_value_num"] = $direction;
-        }else{
-            $this->meta_key_order             = $meta_key;
-            $this->order_by["meta_value"]     = $direction;
         }
 
+        if ($numeric) {
+
+            $this->meta_key_order_numeric       = $meta_key;
+            $this->order_by[ "meta_value_num" ] = $direction;
+        } else {
+            $this->meta_key_order           = $meta_key;
+            $this->order_by[ "meta_value" ] = $direction;
+        }
 
 
         return $this;
@@ -183,13 +197,14 @@ class Builder
     public function withAnyLimit()
     {
         $this->posts_per_page = -1;
-        $this->offset = 0;
+        $this->offset         = 0;
 
         return $this;
     }
 
     /**
      * @param $search
+     *
      * @return $this
      */
     public function search($search)
@@ -202,11 +217,12 @@ class Builder
 
     /**
      * @param $in_array array
+     *
      * @return $this
      */
     public function inPostIDs($in_array)
     {
-        $in_array = !is_array($in_array) ? array($in_array) : $in_array;
+        $in_array = ! is_array($in_array) ? [$in_array] : $in_array;
 
         $this->in_array = $in_array;
 
@@ -215,11 +231,12 @@ class Builder
 
     /**
      * @param $in_array array
+     *
      * @return $this
      */
     public function notInPostIDs($in_array)
     {
-        $in_array = !is_array($in_array) ? array($in_array) : $in_array;
+        $in_array = ! is_array($in_array) ? [$in_array] : $in_array;
 
         $this->not_in_array = $in_array;
 
@@ -228,20 +245,23 @@ class Builder
 
 
     /**
-     * @param string $where_type
+     * @param string                   $where_type
      * @param MetaQueryCollection|null $collection
+     *
      * @return $this
      * @throws MainMetaQueryAlreadyCreatedException
      */
-    public function createMainMetaQuery($where_type="AND", MetaQueryCollection $collection=null)
+    public function createMetaQuery($where_type = "AND", MetaQueryCollection $collection = null)
     {
-        if($this->mainMetaQueryCollection)
+        if ($this->mainMetaQueryCollection) {
             throw new MainMetaQueryAlreadyCreatedException();
+        }
 
         $this->mainMetaQueryCollection = new MetaQueryCollection($where_type);
 
-        if($collection)
+        if ($collection) {
             $this->mainMetaQueryCollection->addCollection($collection);
+        }
 
         return $this;
 
@@ -249,20 +269,23 @@ class Builder
 
 
     /**
-     * @param string $where_type
+     * @param string                       $where_type
      * @param TaxonomyQueryCollection|null $collection
+     *
      * @return $this
      * @throws MainTaxonomyQueryAlreadyCreatedException
      */
-    public function createMainTaxonomyQuery($where_type="AND", TaxonomyQueryCollection $collection=null)
+    public function createTaxonomyQuery($where_type = "AND", TaxonomyQueryCollection $collection = null)
     {
-        if($this->mainTaxonomyQueryCollection)
+        if ($this->mainTaxonomyQueryCollection) {
             throw new MainTaxonomyQueryAlreadyCreatedException();
+        }
 
         $this->mainTaxonomyQueryCollection = new TaxonomyQueryCollection($where_type);
 
-        if($collection)
+        if ($collection) {
             $this->mainTaxonomyQueryCollection->addCollection($collection);
+        }
 
         return $this;
     }
@@ -273,6 +296,7 @@ class Builder
     public function setAnyPostType()
     {
         $this->post_types = static::POST_TYPE_ANY;
+
         return $this;
     }
 
@@ -282,30 +306,29 @@ class Builder
     public function setAnyPostStatus()
     {
         $this->post_status = static::POST_STATUS_ANY;
+
         return $this;
     }
 
     /**
      * @param $type
+     *
      * @return $this
      */
     public function addPostType($type)
     {
-        if($this->post_types == static::POST_TYPE_ANY)
-        {
-            $this->post_types = array();
+        if ($this->post_types == static::POST_TYPE_ANY) {
+            $this->post_types = [];
         }
 
-        if(is_array($type))
-        {
-            foreach ($type as $value)
-            {
-                $this->post_types[$value] = $value;
+        if (is_array($type)) {
+            foreach ($type as $value) {
+                $this->post_types[ $value ] = $value;
             }
 
-        }else{
+        } else {
 
-            $this->post_types[$type] = $type;
+            $this->post_types[ $type ] = $type;
         }
 
         return $this;
@@ -314,49 +337,53 @@ class Builder
 
     /**
      * @param $status
+     *
      * @return $this
      */
     public function addPostStatus($status)
     {
-        if($this->post_status == static::POST_STATUS_ANY)
-        {
-            $this->post_status = array();
+        if ($this->post_status == static::POST_STATUS_ANY) {
+            $this->post_status = [];
         }
 
-        if(is_array($status))
-        {
-            foreach ($status as $value)
-            {
-                $this->post_status[$value] = $value;
+        if (is_array($status)) {
+            foreach ($status as $value) {
+                $this->post_status[ $value ] = $value;
             }
 
-        }else{
+        } else {
 
-            $this->post_status[$status] = $status;
+            $this->post_status[ $status ] = $status;
         }
 
         return $this;
     }
+
     /**
      * @param $type
+     *
      * @return $this
      */
     public function removePostType($type)
     {
-        if(isset($this->post_types[$type]))
-            unset($this->post_types[$type]);
+        if (isset($this->post_types[ $type ])) {
+            unset($this->post_types[ $type ]);
+        }
 
         return $this;
     }
 
     /**
      * @param MetaQueryCollection $collection
+     *
      * @return $this
+     * @throws \Wenprise\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException
      */
     public function addMetaQueryCollection(MetaQueryCollection $collection)
     {
-        if(!$this->mainMetaQueryCollection)
-            $this->createMainMetaQuery();
+        if ( ! $this->mainMetaQueryCollection) {
+            $this->createMetaQuery();
+        }
 
         $this->mainMetaQueryCollection->addCollection($collection);
 
@@ -366,12 +393,15 @@ class Builder
 
     /**
      * @param MetaQuery $metaQuery
+     *
      * @return $this
+     * @throws \Wenprise\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException
      */
     public function addMetaQuery(MetaQuery $metaQuery)
     {
-        if(!$this->mainMetaQueryCollection)
-            $this->createMainMetaQuery();
+        if ( ! $this->mainMetaQueryCollection) {
+            $this->createMetaQuery();
+        }
 
         $this->mainMetaQueryCollection->add($metaQuery);
 
@@ -380,12 +410,15 @@ class Builder
 
     /**
      * @param TaxonomyQueryCollection $collection
+     *
      * @return $this
+     * @throws \Wenprise\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException
      */
     public function addTaxonomyQueryCollection(TaxonomyQueryCollection $collection)
     {
-        if(!$this->mainTaxonomyQueryCollection)
-            $this->createMainMetaQuery();
+        if ( ! $this->mainTaxonomyQueryCollection) {
+            $this->createMetaQuery();
+        }
 
         $this->mainTaxonomyQueryCollection->addCollection($collection);
 
@@ -395,12 +428,15 @@ class Builder
 
     /**
      * @param TaxonomyQuery $metaQuery
+     *
      * @return $this
+     * @throws \Wenprise\WPQueryBuilder\Exception\MainTaxonomyQueryAlreadyCreatedException
      */
     public function addTaxonomyQuery(TaxonomyQuery $metaQuery)
     {
-        if(!$this->mainTaxonomyQueryCollection)
-            $this->createMainTaxonomyQuery();
+        if ( ! $this->mainTaxonomyQueryCollection) {
+            $this->createTaxonomyQuery();
+        }
 
         $this->mainTaxonomyQueryCollection->add($metaQuery);
 
@@ -432,6 +468,7 @@ class Builder
     public function getPosts()
     {
         $wp_query = $this->getWPQuery();
+
         return $wp_query->get_posts();
     }
 
@@ -442,7 +479,7 @@ class Builder
     {
         $this->hydrateParametersArray();
 
-        $this->parameters["fields"] = "ids";
+        $this->parameters[ "fields" ] = "ids";
 
         $wp_query = $this->getWPQuery();
 
@@ -455,27 +492,23 @@ class Builder
      */
     private function hydrateParametersArray()
     {
-        $this->parameters["post_type"]    = $this->getPostTypeParametersArray();
-        $this->parameters["post_status"]  = $this->getPostStatusParametersArray();
+        $this->parameters[ "post_type" ]   = $this->getPostTypeParametersArray();
+        $this->parameters[ "post_status" ] = $this->getPostStatusParametersArray();
 
-        if($this->author)
-        {
-            $this->parameters["author"] = $this->author;
+        if ($this->author) {
+            $this->parameters[ "author" ] = $this->author;
         }
 
-        if($this->search_parameter)
-        {
-            $this->parameters["s"] = $this->search_parameter;
+        if ($this->search_parameter) {
+            $this->parameters[ "s" ] = $this->search_parameter;
         }
 
-        if($this->mainMetaQueryCollection)
-        {
-            $this->parameters["meta_query"] = $this->getMetaParametersArray($this->mainMetaQueryCollection);
+        if ($this->mainMetaQueryCollection) {
+            $this->parameters[ "meta_query" ] = $this->getMetaParametersArray($this->mainMetaQueryCollection);
         }
 
-        if($this->mainTaxonomyQueryCollection)
-        {
-            $this->parameters["tax_query"] = $this->getTaxonomyParametersArray($this->mainTaxonomyQueryCollection);
+        if ($this->mainTaxonomyQueryCollection) {
+            $this->parameters[ "tax_query" ] = $this->getTaxonomyParametersArray($this->mainTaxonomyQueryCollection);
         }
 
         $this->hydrateLimitsParameters();
@@ -488,27 +521,25 @@ class Builder
 
     /**
      * @param MetaQueryCollection $collection
-     * @param array $return_array
+     * @param array               $return_array
+     *
      * @return array
      */
-    private function getMetaParametersArray(MetaQueryCollection $collection, $return_array=array())
+    private function getMetaParametersArray(MetaQueryCollection $collection, $return_array = [])
     {
 
-        $return_array["relation"] = $collection->getRelationType();
+        $return_array[ "relation" ] = $collection->getRelationType();
 
-        foreach ($collection as $meta)
-        {
-            if($meta instanceof MetaQuery)
-            {
-                $return_array[] = array(
+        foreach ($collection as $meta) {
+            if ($meta instanceof MetaQuery) {
+                $return_array[] = [
                     "key"     => $meta->key,
                     "value"   => $meta->value,
                     "compare" => $meta->compare,
                     "type"    => $meta->type,
-                );
+                ];
 
-            }else if($meta instanceof MetaQueryCollection)
-            {
+            } elseif ($meta instanceof MetaQueryCollection) {
                 $return_array[] = $this->getMetaParametersArray($meta);
             }
         }
@@ -518,28 +549,26 @@ class Builder
 
     /**
      * @param TaxonomyQueryCollection $collection
-     * @param array $return_array
+     * @param array                   $return_array
+     *
      * @return array
      */
-    private function getTaxonomyParametersArray(TaxonomyQueryCollection $collection, $return_array=array())
+    private function getTaxonomyParametersArray(TaxonomyQueryCollection $collection, $return_array = [])
     {
 
-        $return_array["relation"] = $collection->getRelationType();
+        $return_array[ "relation" ] = $collection->getRelationType();
 
-        foreach ($collection as $tax)
-        {
-            if($tax instanceof TaxonomyQuery)
-            {
-                $return_array[] = array(
+        foreach ($collection as $tax) {
+            if ($tax instanceof TaxonomyQuery) {
+                $return_array[] = [
                     "taxonomy"         => $tax->taxonomy,
                     "field"            => $tax->field,
                     "terms"            => $tax->terms,
                     "include_children" => $tax->include_children,
-                    "operator"         => $tax->operator
-                );
+                    "operator"         => $tax->operator,
+                ];
 
-            }else if($tax instanceof TaxonomyQueryCollection)
-            {
+            } elseif ($tax instanceof TaxonomyQueryCollection) {
                 $return_array[] = $this->getTaxonomyParametersArray($tax);
             }
         }
@@ -553,8 +582,7 @@ class Builder
      */
     private function getPostTypeParametersArray()
     {
-        if(is_array($this->post_types))
-        {
+        if (is_array($this->post_types)) {
             return array_values($this->post_types);
         }
 
@@ -567,8 +595,7 @@ class Builder
      */
     private function getPostStatusParametersArray()
     {
-        if(is_array($this->post_status))
-        {
+        if (is_array($this->post_status)) {
             return array_values($this->post_status);
         }
 
@@ -581,10 +608,9 @@ class Builder
     private function hydrateLimitsParameters()
     {
 
-        if($this->posts_per_page)
-        {
-            $this->parameters["posts_per_page"] = $this->posts_per_page;
-            $this->parameters["offset"]         = (int) $this->offset;
+        if ($this->posts_per_page) {
+            $this->parameters[ "posts_per_page" ] = $this->posts_per_page;
+            $this->parameters[ "offset" ]         = (int)$this->offset;
         }
 
     }
@@ -596,25 +622,21 @@ class Builder
     private function hydrateOrderParameters()
     {
 
-        if($this->order_by)
-        {
+        if ($this->order_by) {
 
-            $this->parameters["orderby"] = $this->order_by;
-            if(!is_array($this->order_by))
-            {
-                $this->parameters["order"]   = $this->order_direction?$this->order_direction:"DESC";
+            $this->parameters[ "orderby" ] = $this->order_by;
+            if ( ! is_array($this->order_by)) {
+                $this->parameters[ "order" ] = $this->order_direction ? $this->order_direction : "DESC";
             }
         }
 
-        if($this->meta_key_order || $this->meta_key_order_numeric)
-        {
+        if ($this->meta_key_order || $this->meta_key_order_numeric) {
 
-            if($this->meta_key_order)
-            {
-                $this->parameters["meta_key"] = $this->meta_key_order;
+            if ($this->meta_key_order) {
+                $this->parameters[ "meta_key" ] = $this->meta_key_order;
 
-            }else{
-                $this->parameters["meta_key"] = $this->meta_key_order_numeric;
+            } else {
+                $this->parameters[ "meta_key" ] = $this->meta_key_order_numeric;
             }
 
         }
@@ -627,14 +649,12 @@ class Builder
     private function hydrateInParameters()
     {
 
-        if(is_array($this->in_array))
-        {
-            $this->parameters["post__in"] = $this->in_array;
+        if (is_array($this->in_array)) {
+            $this->parameters[ "post__in" ] = $this->in_array;
         }
 
-        if(is_array($this->not_in_array))
-        {
-            $this->parameters["post__not_in"] = $this->not_in_array;
+        if (is_array($this->not_in_array)) {
+            $this->parameters[ "post__not_in" ] = $this->not_in_array;
         }
 
     }

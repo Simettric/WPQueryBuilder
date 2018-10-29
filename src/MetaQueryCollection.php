@@ -5,19 +5,19 @@
  * Time: 0:06
  */
 
-namespace Simettric\WPQueryBuilder;
+namespace Wenprise\WPQueryBuilder;
 
 
 class MetaQueryCollection implements \Iterator
 {
 
-    private $position     = 0;
-    private $meta_queries = array();
+    private $position = 0;
+    private $meta_queries = [];
 
     private $where_type_relation;
 
 
-    public function __construct($where_type="AND")
+    public function __construct($where_type = "AND")
     {
         $this->where_type_relation = $where_type;
     }
@@ -33,6 +33,7 @@ class MetaQueryCollection implements \Iterator
 
     /**
      * @param MetaQuery $query
+     *
      * @return $this
      */
     public function add(MetaQuery $query)
@@ -56,7 +57,7 @@ class MetaQueryCollection implements \Iterator
      */
     public function current()
     {
-        return $this->meta_queries[$this->position];
+        return $this->meta_queries[ $this->position ];
     }
 
     /**
@@ -80,7 +81,7 @@ class MetaQueryCollection implements \Iterator
      */
     public function valid()
     {
-        return isset($this->meta_queries[$this->position]);
+        return isset($this->meta_queries[ $this->position ]);
     }
 
     /**

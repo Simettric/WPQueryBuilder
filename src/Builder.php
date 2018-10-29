@@ -142,6 +142,7 @@ class Builder
 
     /**
      * @param $order_by
+     * @param string $direction
      *
      * @return $this
      */
@@ -163,10 +164,12 @@ class Builder
 
 
     /**
-     * @param      $meta_key
-     * @param bool $numeric
+     * @param        $meta_key
+     * @param string $direction
+     * @param bool   $numeric
      *
      * @return $this
+     * @throws \Exception
      */
     public function setOrderByMeta($meta_key, $direction = "DESC", $numeric = false)
     {
@@ -374,6 +377,7 @@ class Builder
      * @param MetaQueryCollection $collection
      *
      * @return $this
+     * @throws \Wenprise\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException
      */
     public function addMetaQueryCollection(MetaQueryCollection $collection)
     {
@@ -391,6 +395,7 @@ class Builder
      * @param MetaQuery $metaQuery
      *
      * @return $this
+     * @throws \Wenprise\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException
      */
     public function addMetaQuery(MetaQuery $metaQuery)
     {
@@ -407,6 +412,7 @@ class Builder
      * @param TaxonomyQueryCollection $collection
      *
      * @return $this
+     * @throws \Wenprise\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException
      */
     public function addTaxonomyQueryCollection(TaxonomyQueryCollection $collection)
     {
@@ -424,6 +430,7 @@ class Builder
      * @param TaxonomyQuery $metaQuery
      *
      * @return $this
+     * @throws \Wenprise\WPQueryBuilder\Exception\MainTaxonomyQueryAlreadyCreatedException
      */
     public function addTaxonomyQuery(TaxonomyQuery $metaQuery)
     {

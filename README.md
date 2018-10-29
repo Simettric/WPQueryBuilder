@@ -14,10 +14,10 @@ INSTALLATION
 USAGE
 =====
 
-### META QUERIES
+### 元数据查询
 
 
-Retrieve any post type where post meta color value equals to blue OR size meta value equals to XL
+获取元数据 "color" 为 "blue" 或者 "size" 为 "XL" 的所有文章类型中的文章
 
            $builder = new Builder();
            $wp_query = $builder->createMetaQuery("OR")
@@ -26,7 +26,7 @@ Retrieve any post type where post meta color value equals to blue OR size meta v
                                 ->getWPQuery();
                                 
                                 
-Retrieve any post type where post meta price is equal or greater than 10 OR size meta value equals to XL
+获取元数据 "price" 大于等于 "10" 并且 "size" 为 "XL" 的所有文章类型中的文章
                
            $builder = new Builder();
            $wp_query = $builder->createMetaQuery("AND")
@@ -49,7 +49,7 @@ Retrieve any post type where post meta price is equal or greater than 10 OR size
            $wp_query = $builder->addMetaQueryCollection($condition)
                                ->getWPQuery();  
                                
-### TAXONOMY QUERIES
+### 自定义分类法查询
 
 
 Retrieve the contents under ("pets" OR "tools") values in the "category" taxonomy AND in under 'sweet' in "custom" taxonomy
@@ -89,17 +89,19 @@ You can have nested relations too
                                ->getWPQuery();     
                                                        
 
-### POST TYPES
+### 文章类型
 
 Retrieve all PAGES
 
            $builder = new Builder();
-           $wp_query = $builder->addPostType(Builder::POST_TYPE_PAGE)->getWPQuery();
+           $wp_query = $builder->addPostType(Builder::POST_TYPE_PAGE)
+                               ->getWPQuery();
            
 Retrieve all CUSTOM POST TYPE
 
            $builder = new Builder();
-           $wp_query = $builder->addPostType('your_custom')->getWPQuery();
+           $wp_query = $builder->addPostType('your_custom')
+                               ->getWPQuery();
            
 Retrieve all CUSTOM POST TYPE and PAGES
 
@@ -109,13 +111,14 @@ Retrieve all CUSTOM POST TYPE and PAGES
                                ->getWPQuery();
                                
     
-### SEARCH
+### 搜索
 
 Search contents
 
             $builder = new Builder();
     
-            $wp_query = $builder->search("search query")->getWPQuery();
+            $wp_query = $builder->search("search query")
+                                ->getWPQuery();
 
      
 ### IN and NOT IN
@@ -124,13 +127,15 @@ Retrieve contents with ID in array of IDS
 
             $builder = new Builder();
     
-            $wp_query = $builder->inPostIDs(array(1,2,3))->getWPQuery();
+            $wp_query = $builder->inPostIDs(array(1,2,3))
+                                ->getWPQuery();
             
 Retrieve contents with ID not in array of IDS
 
             $builder = new Builder();
     
-            $wp_query = $builder->notInPostIDs(array(1,2,3))->getWPQuery();
+            $wp_query = $builder->notInPostIDs(array(1,2,3))
+                                ->getWPQuery();
       
       
 ### ORDERBY
@@ -139,7 +144,8 @@ Order contents by title descending
 
             $builder = new Builder();
     
-            $wp_query = $builder->setOrderBy("title")->getWPQuery();
+            $wp_query = $builder->setOrderBy("title")
+                                ->getWPQuery();
             
            
 Order contents by date, ascending
@@ -164,7 +170,8 @@ Order contents by custom meta
 
             $builder = new Builder();
     
-            $wp_query = $builder->setOrderByMeta("color", "DESC")->getWPQuery();
+            $wp_query = $builder->setOrderByMeta("color", "DESC")
+                                ->getWPQuery();
             
             
 Order contents by custom numeric meta
@@ -181,14 +188,17 @@ Retrieve only 10 contents
 
             $builder = new Builder();
     
-            $wp_query = $builder->setLimit(10)->getWPQuery();
+            $wp_query = $builder->setLimit(10)
+                                ->getWPQuery();
             
            
 Retrieve 20 contents starting from the 10th position
 
             $builder = new Builder();
     
-            $wp_query = $builder->setLimit(20)->setOffset(10)->getWPQuery();
+            $wp_query = $builder->setLimit(20)
+                                ->setOffset(10)
+                                ->getWPQuery();
 
 ### RETRIEVING
 
@@ -225,6 +235,7 @@ Get an array containing only the post IDs. This is useful when you want to retur
             
             $builder = new Builder();
             
-            $wp_query = $builder->inPostIDs($ids)->getWPQuery();
+            $wp_query = $builder->inPostIDs($ids)
+                                ->getWPQuery();
 
 

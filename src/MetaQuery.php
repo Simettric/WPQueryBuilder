@@ -21,15 +21,17 @@ class MetaQuery
 
 
     /**
-     * @param $key
-     * @param $value
+     * @param        $key
+     * @param        $value
      * @param string $compare ( '=', '!=', '>', '>=', '<', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN', 'EXISTS' and 'NOT EXISTS')
-     * @param string $type ('NUMERIC', 'BINARY', 'CHAR', 'DATE', 'DATETIME', 'DECIMAL', 'SIGNED', 'TIME', 'UNSIGNED', You can also specify precision and scale for the 'DECIMAL' and 'NUMERIC' types (for example, 'DECIMAL(10,5)' or 'NUMERIC(10)' are valid)
+     * @param string $type    ('NUMERIC', 'BINARY', 'CHAR', 'DATE', 'DATETIME', 'DECIMAL', 'SIGNED', 'TIME', 'UNSIGNED', You can also specify precision and
+     *                        scale for the 'DECIMAL' and 'NUMERIC' types (for example, 'DECIMAL(10,5)' or 'NUMERIC(10)' are valid)
+     *
      * @return MetaQuery
      */
-    public static function create($key, $value, $compare="=", $type="CHAR")
+    public static function create($key, $value, $compare = "=", $type = "CHAR")
     {
-        $instance = new MetaQuery();
+        $instance          = new MetaQuery();
         $instance->key     = $key;
         $instance->value   = $value;
         $instance->compare = $compare;
@@ -37,8 +39,6 @@ class MetaQuery
 
         return $instance;
     }
-
-
 
 
 }

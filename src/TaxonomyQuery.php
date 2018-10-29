@@ -15,33 +15,33 @@ class TaxonomyQuery
 
     public $field;
 
-    public $terms=array();
+    public $terms = [];
 
-    public $include_children=true;
+    public $include_children = true;
 
     /**
      * @var string string ('IN', 'NOT IN', 'AND', 'EXISTS' and 'NOT EXISTS')
      */
-    public $operator="IN";
+    public $operator = "IN";
 
 
     /**
-     * @param $taxonomy
-     * @param $field
-     * @param $terms
-     * @param bool $include_children
+     * @param        $taxonomy
+     * @param        $field
+     * @param        $terms
+     * @param bool   $include_children
      * @param string $operator ('IN', 'NOT IN', 'AND', 'EXISTS' and 'NOT EXISTS')
+     *
      * @return TaxonomyQuery
      */
-    public static function create($taxonomy, $field, $terms=array(), $include_children=true, $operator="IN")
+    public static function create($taxonomy, $field, $terms = [], $include_children = true, $operator = "IN")
     {
 
-        if(!is_array($terms))
-        {
-            $terms = array($terms);
+        if ( ! is_array($terms)) {
+            $terms = [$terms];
         }
 
-        $instance = new TaxonomyQuery();
+        $instance                   = new TaxonomyQuery();
         $instance->taxonomy         = $taxonomy;
         $instance->field            = $field;
         $instance->terms            = $terms;
@@ -50,8 +50,6 @@ class TaxonomyQuery
 
         return $instance;
     }
-
-
 
 
 }

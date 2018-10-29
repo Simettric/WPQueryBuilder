@@ -5,10 +5,10 @@
  * Time: 22:36
  */
 
-namespace Simettric\WPQueryBuilder;
+namespace Wenprise\WPQueryBuilder;
 use Collections\Exceptions\Exception;
-use Simettric\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
-use Simettric\WPQueryBuilder\Exception\MainTaxonomyQueryAlreadyCreatedException;
+use Wenprise\WPQueryBuilder\Exception\MainMetaQueryAlreadyCreatedException;
+use Wenprise\WPQueryBuilder\Exception\MainTaxonomyQueryAlreadyCreatedException;
 
 
 class Builder

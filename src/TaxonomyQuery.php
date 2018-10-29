@@ -5,7 +5,7 @@
  * Time: 23:47
  */
 
-namespace Simettric\WPQueryBuilder;
+namespace Wenprise\WPQueryBuilder;
 
 
 class TaxonomyQuery

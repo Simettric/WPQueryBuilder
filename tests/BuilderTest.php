@@ -1,11 +1,11 @@
 <?php
 
-namespace Simettric\WPQueryBuilder\Test;
-use Simettric\WPQueryBuilder\Builder;
-use Simettric\WPQueryBuilder\MetaQuery;
-use Simettric\WPQueryBuilder\MetaQueryCollection;
-use Simettric\WPQueryBuilder\TaxonomyQuery;
-use Simettric\WPQueryBuilder\TaxonomyQueryCollection;
+namespace Wenprise\WPQueryBuilder\Test;
+use Wenprise\WPQueryBuilder\Builder;
+use Wenprise\WPQueryBuilder\MetaQuery;
+use Wenprise\WPQueryBuilder\MetaQueryCollection;
+use Wenprise\WPQueryBuilder\TaxonomyQuery;
+use Wenprise\WPQueryBuilder\TaxonomyQueryCollection;
 
 /**
  * Created by Asier Marqués <asiermarques@gmail.com>

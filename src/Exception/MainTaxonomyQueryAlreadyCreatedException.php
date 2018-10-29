@@ -5,7 +5,7 @@
  * Time: 0:22
  */
 
-namespace Simettric\WPQueryBuilder\Exception;
+namespace Wenprise\WPQueryBuilder\Exception;
 
 
 class MainTaxonomyQueryAlreadyCreatedException extends \Exception

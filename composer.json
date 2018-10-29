@@ -1,15 +1,19 @@
 {
-  "name": "simettric/wp-query-builder",
+  "name": "wenprise/wp-query-builder",
   "description": "A query builder for WordPress WP_Query, inspired by Doctrine Query Builder",
   "keywords": [
     "wordpress"
   ],
-  "homepage": "http://simettric.com",
+  "homepage": "https://www.wpzhiku.com",
   "license": "MIT",
   "authors": [
     {
       "name": "Asier Marqués",
       "email": "asier@simettric.com"
+    },
+    {
+      "name": "Amos Lee",
+      "email": "amos@wpcio.com"
     }
   ],
   "require": {
@@ -20,12 +24,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Simettric\\WPQueryBuilder\\": "src/"
+      "Wenprise\\WPQueryBuilder\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Simettric\\WPQueryBuilder\\Test\\": "tests/"
+      "Wenprise\\WPQueryBuilder\\Test\\": "tests/"
     }
   },
   "minimum-stability": "dev"

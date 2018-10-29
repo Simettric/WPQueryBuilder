@@ -5,7 +5,7 @@
  * Time: 0:06
  */
 
-namespace Simettric\WPQueryBuilder;
+namespace Wenprise\WPQueryBuilder;
 
 
 class TaxonomyQueryCollection implements \Iterator
